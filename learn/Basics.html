@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="app1" v-bind:title="ti">
+    {{a.split('').reverse().join('')}}
+</div>
+<div id="app2">
+    <p>{{message}}</p>
+    <p>{{reverseMessage}}</p>
+    <p>{{nowtime}}</p>
+    <p>{{nowtime2()}}</p>
+</div>
+<div id="app3">
+    <template v-if="condition==='a'">
+        <h1>condition a</h1>
+        <p>Paragraph 1</p>
+        <p>Paragraph 2</p>
+        <input type="text" placeholder="输入方式a">
+    </template>
+    <template v-else-if="condition==='b'">
+        <h1>condition b</h1>
+        <p>Paragraph 1</p>
+        <p>Paragraph 2</p>
+        <input type="text" placeholder="输入方式b">
+    </template>
+    <template v-else>
+        <h1>condition other</h1>
+        <p>Paragraph 1</p>
+        <p>Paragraph 2</p>
+        <input type="text" placeholder="输入方式other">
+    </template>
+</div>
+<div>
+    <ul id="app4">
+        <li v-for="(item,index) in items">
+            {{parentMessage}}-{{index}}-{{item.message}}
+        </li>
+    </ul>
+</div>
+<div>
+    <ul id="app5">
+        <li v-for="(key,value) in object">
+            {{key}}:{{value}}
+        </li>
+    </ul>
+</div>
+<div>
+    <ul id="app6">
+        <li v-for="n in evenNumbers">{{n}}</li>
+    </ul>
+</div>
+<div id="app7">
+    <button v-on:click="counter">
+        Add 1
+    </button>
+    <p>
+        The button above has been clicked {{ count }} times.
+    </p>
+</div>
+<div id="app8">
+    <input type="text" placeholder="edit me" v-model.lazy="message">
+    <p>message: {{message}}</p>
+    <input type="checkbox" id="jack" value="jack" v-model="checkedNames">
+    <label for="jack">jack</label>
+    <input type="checkbox" id="bob" value="bob" v-model="checkedNames">
+    <label for="bob">bob</label>
+    <input type="checkbox" id="lily" value="lily" v-model="checkedNames">
+    <label for="lily">lily</label>
+    <br>
+    <span>Checked Names: {{checkedNames}}</span>
+</div>
+<script>
+    var data = {
+        a: '123456',
+        ti: 'go fuck your self'
+    }
+    Object.freeze(data)
+    var vm = new Vue({
+        el: '#app1',
+        data: data,
+        created: function () {
+            //this指向 vm 实例
+            console.log('a is: ' + this.a)
+        },
+        beforeDestroy: function () {
+            console.log('beforeDestroy')
+        }
+    })
+    vm.$destroy();
+    var app2 = new Vue({
+        el: '#app2',
+        data: {
+            message: 'yoxi'
+        },
+        computed: {
+            reverseMessage: function () {
+                return this.message.split('').reverse().join('')
+            },
+            nowtime: function () {
+                return Date.now()
+            }
+        },
+        methods: {
+            nowtime2: function () {
+                return Date.now();
+            }
+        }
+    })
+    var app3 = new Vue({
+        el: '#app3',
+        data: {
+            condition: 'a'
+        }
+    })
+    var app4 = new Vue({
+        el: '#app4',
+        data: {
+            parentMessage: 'godfather',
+            items: [
+                {message: 'foo'},
+                {message: 'bar'}
+            ]
+        }
+    })
+    var app5 = new Vue({
+        el: '#app5',
+        data: {
+            object: {
+                name: 'zhouyaofeng',
+                sex: 'male',
+                age: '22'
+            }
+        }
+    })
+    var app6 = new Vue({
+        el: '#app6',
+        data: {
+            numbers: [0, 1, 2, 3, 4, 5, 6]
+        },
+        computed: {
+            evenNumbers: function () {
+                return this.numbers.filter(function (number) {
+                    return number % 2 === 0
+                })
+            }
+        }
+    })
+    var app7 = new Vue({
+        el: '#app7',
+        data: {
+            name: 'maybe',
+            count: 0
+        },
+        methods: {
+            counter: function (event) {
+                // `this` 在方法里指向当前vue实例
+                alert('call me ' + this.name + ' !')
+                //`event` 是原生Dom事件
+                if (event) {
+                    alert(event.target.tagName)
+                }
+                this.count++
+            }
+        }
+    })
+    var app8 = new Vue({
+        el: '#app8',
+        data: {
+            message:'',
+            checkedNames:[]
+        }
+    })
+</script>
+</body>
+</html>
